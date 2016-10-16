@@ -1,0 +1,127 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module RoundKeyGeneratorModule</title>
+<meta charset="utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>RoundKeyGeneratorModule</strong></big></big> (10/8/2016)</font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/michaeloduah/Documents/Folders/dev/Python/MasterProject/RoundKeyGeneratorModule.py">/Users/michaeloduah/Documents/Folders/dev/Python/MasterProject/RoundKeyGeneratorModule.py</a></font></td></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="RoundKeyGeneratorModule.html#RoundKeyGenerator">RoundKeyGenerator</a>
+</font></dt></dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="RoundKeyGenerator">class <strong>RoundKeyGenerator</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>Round&nbsp;key&nbsp;Generator.<br>
+This&nbsp;system&nbsp;is&nbsp;a&nbsp;subsystem&nbsp;of&nbsp;the&nbsp;DES&nbsp;system.&nbsp;The&nbsp;<a href="#RoundKeyGenerator">RoundKeyGenerator</a>&nbsp;system<br>
+is&nbsp;made&nbsp;up&nbsp;of&nbsp;a&nbsp;class&nbsp;"<a href="#RoundKeyGenerator">RoundKeyGenerator</a>"&nbsp;and&nbsp;seven&nbsp;functions.<br>
+Altogether,&nbsp;this&nbsp;system&nbsp;produces&nbsp;16&nbsp;keys.&nbsp;These&nbsp;keys&nbsp;are&nbsp;used&nbsp;to&nbsp;encrypt&nbsp;data.<br>
+&nbsp;<br>
+@param:&nbsp;&nbsp;key<br>
+@return:&nbsp;list&nbsp;of&nbsp;16&nbsp;keys<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="RoundKeyGenerator-__init__"><strong>__init__</strong></a>(self, uKey)</dt><dd><tt>Class&nbsp;constructor<br>
+&nbsp;&nbsp;--&nbsp;This&nbsp;function&nbsp;sets&nbsp;the&nbsp;private&nbsp;attribute&nbsp;"key"&nbsp;to&nbsp;the&nbsp;user<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;suggested&nbsp;key<br>
+&nbsp;<br>
+@param:&nbsp;&nbsp;self,&nbsp;user&nbsp;key<br>
+@return:&nbsp;void&nbsp;(stores&nbsp;key&nbsp;entered&nbsp;by&nbsp;user&nbsp;to&nbsp;keyPlain,&nbsp;initializes&nbsp;key&nbsp;to&nbsp;empty&nbsp;string,&nbsp;initializes&nbsp;a&nbsp;list&nbsp;to&nbsp;store&nbsp;generated&nbsp;keys)</tt></dd></dl>
+
+<dl><dt><a name="RoundKeyGenerator-compress"><strong>compress</strong></a>(self, newKey)</dt><dd><tt>This&nbsp;method&nbsp;returns&nbsp;a&nbsp;string&nbsp;of&nbsp;48&nbsp;chars&nbsp;from&nbsp;the&nbsp;"key"<br>
+&nbsp;<br>
+*&nbsp;The&nbsp;expansion&nbsp;function&nbsp;uses&nbsp;the&nbsp;return&nbsp;value<br>
+&nbsp;<br>
+@param:&nbsp;&nbsp;self,&nbsp;key&nbsp;--string<br>
+@return:&nbsp;key&nbsp;--string</tt></dd></dl>
+
+<dl><dt><a name="RoundKeyGenerator-expand"><strong>expand</strong></a>(self, newKey)</dt><dd><tt>This&nbsp;method&nbsp;returns&nbsp;a&nbsp;string&nbsp;of&nbsp;56&nbsp;chars&nbsp;from&nbsp;the&nbsp;"key"<br>
+&nbsp;<br>
+*&nbsp;The&nbsp;split&nbsp;function&nbsp;uses&nbsp;the&nbsp;return&nbsp;value<br>
+&nbsp;<br>
+@param:&nbsp;&nbsp;self,&nbsp;key&nbsp;--string<br>
+@return:&nbsp;key&nbsp;--string</tt></dd></dl>
+
+<dl><dt><a name="RoundKeyGenerator-generate"><strong>generate</strong></a>(self)</dt><dd><tt>This&nbsp;is&nbsp;the&nbsp;main&nbsp;method&nbsp;in&nbsp;the&nbsp;system.<br>
+It&nbsp;calls&nbsp;all&nbsp;the&nbsp;necessary&nbsp;functions&nbsp;needed&nbsp;to&nbsp;generate&nbsp;the&nbsp;16&nbsp;keys<br>
+&nbsp;<br>
+Functions&nbsp;in&nbsp;order&nbsp;(Done&nbsp;ones):<br>
+&nbsp;&nbsp;&nbsp;--&nbsp;toBin<br>
+&nbsp;&nbsp;&nbsp;--&nbsp;parityDrop<br>
+&nbsp;&nbsp;&nbsp;<br>
+Functions&nbsp;in&nbsp;order&nbsp;(Done&nbsp;16&nbsp;times):<br>
+&nbsp;&nbsp;&nbsp;--&nbsp;split<br>
+&nbsp;&nbsp;&nbsp;--&nbsp;shift<br>
+&nbsp;&nbsp;&nbsp;--&nbsp;merge<br>
+&nbsp;&nbsp;&nbsp;--&nbsp;compress<br>
+&nbsp;<br>
+@param:&nbsp;&nbsp;self<br>
+@return:&nbsp;list&nbsp;of&nbsp;keys</tt></dd></dl>
+
+<dl><dt><a name="RoundKeyGenerator-listToString"><strong>listToString</strong></a>(self, keyList)</dt><dd><tt>This&nbsp;method&nbsp;converts&nbsp;a&nbsp;list&nbsp;to&nbsp;a&nbsp;string<br>
+&nbsp;<br>
+@param:&nbsp;&nbsp;list&nbsp;of&nbsp;keys<br>
+@return:&nbsp;string&nbsp;type&nbsp;of&nbsp;list&nbsp;of&nbsp;keys</tt></dd></dl>
+
+<dl><dt><a name="RoundKeyGenerator-parityDrop"><strong>parityDrop</strong></a>(self)</dt><dd><tt>This&nbsp;method&nbsp;returns&nbsp;a&nbsp;string&nbsp;of&nbsp;56&nbsp;chars&nbsp;from&nbsp;the&nbsp;"key"<br>
+&nbsp;<br>
+*&nbsp;The&nbsp;split&nbsp;function&nbsp;uses&nbsp;the&nbsp;return&nbsp;value<br>
+&nbsp;<br>
+@param:&nbsp;&nbsp;self<br>
+@return:&nbsp;key&nbsp;--string</tt></dd></dl>
+
+<dl><dt><a name="RoundKeyGenerator-shift"><strong>shift</strong></a>(self, keyTuple, roundStep)</dt><dd><tt>This&nbsp;method&nbsp;shifts&nbsp;the&nbsp;bits&nbsp;of&nbsp;the&nbsp;key&nbsp;either&nbsp;a&nbsp;bit&nbsp;to&nbsp;the&nbsp;left&nbsp;or&nbsp;to&nbsp;the<br>
+right,&nbsp;depending&nbsp;on&nbsp;the&nbsp;key&nbsp;we&nbsp;are&nbsp;trying&nbsp;to&nbsp;produce<br>
+&nbsp;<br>
+*&nbsp;The&nbsp;compress&nbsp;method&nbsp;uses&nbsp;the&nbsp;return&nbsp;value<br>
+&nbsp;<br>
+@param:&nbsp;&nbsp;self,&nbsp;left&nbsp;and&nbsp;right&nbsp;keys&nbsp;--tuple,&nbsp;keyNumber&nbsp;--int<br>
+@return:&nbsp;key&nbsp;--string</tt></dd></dl>
+
+<dl><dt><a name="RoundKeyGenerator-split"><strong>split</strong></a>(self, tmpKey)</dt><dd><tt>This&nbsp;method&nbsp;splits&nbsp;the&nbsp;list&nbsp;of&nbsp;keys&nbsp;gotten&nbsp;from&nbsp;parity&nbsp;drop&nbsp;into&nbsp;two<br>
+equal&nbsp;halves.&nbsp;<br>
+&nbsp;<br>
+*&nbsp;The&nbsp;shift&nbsp;function&nbsp;uses&nbsp;the&nbsp;return&nbsp;values<br>
+&nbsp;<br>
+@param:&nbsp;&nbsp;self,&nbsp;key&nbsp;--string<br>
+@return:&nbsp;2&nbsp;keys&nbsp;of&nbsp;size&nbsp;28&nbsp;--tuple</tt></dd></dl>
+
+<dl><dt><a name="RoundKeyGenerator-toBin"><strong>toBin</strong></a>(self)</dt><dd><tt>This&nbsp;method&nbsp;converts&nbsp;the&nbsp;private&nbsp;attribute&nbsp;key&nbsp;to&nbsp;binary<br>
+&nbsp;<br>
+@param:&nbsp;&nbsp;self<br>
+@return:&nbsp;void&nbsp;(sets&nbsp;private&nbsp;attribute&nbsp;key&nbsp;to&nbsp;binary)</tt></dd></dl>
+
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>__author__</strong> = 'Michael Oduah<font color="#c040c0">\n</font>Babatunde Adesoye'<br>
+<strong>__date__</strong> = '10/8/2016'</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#7799ee">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Author</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#7799ee"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%">Michael&nbsp;Oduah<br>
+Babatunde&nbsp;Adesoye</td></tr></table>
+</body></html>
