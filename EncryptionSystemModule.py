@@ -14,6 +14,19 @@ class EncryptionSystem:
     """
     
     def __init__(self,pTxt):
+        """
+        :CONSTRUCTOR
+
+        This method initializes all needed private attributes
+            - sboxes
+
+        It also:
+          Converts the string received to binary
+          Breaks the string into groups (packets) of about 64 bits (8 bytes)
+
+        @param:  self, plain text to encrypt --string
+        @return: void
+        """
         self.__sBoxes = [
             [
                 [14, 4, 13, 1, 2, 15, 11, 8, 3, 10, 6, 12, 5, 9, 0, 7],
@@ -61,8 +74,14 @@ class EncryptionSystem:
         self.__eKey = ""
         self.__pTxt = pTxt
         self.__packets = []
-        
-        EncryptionSystem.toBin(self)
+
+        # change to binary if not in binary
+        if len(pTxt) == 64:
+            self.__eKey = pTxt
+        else:
+            #RoundKeyGenerator.toBin(self)
+            EncryptionSystem.toBin(self)
+            
         self.__eRounds = len(self.__eKey) // 64
         EncryptionSystem.toPackets(self)
 
@@ -80,6 +99,9 @@ class EncryptionSystem:
             self.__eKey = ("0" * (64 - (len(self.__eKey) % 64)))+ self.__eKey
 
     def toPackets(self):
+        """
+        
+        """
         # initializations
         start = 0
         end = 64
@@ -130,11 +152,11 @@ class EncryptionSystem:
         @return: key --string
         """
         # create list of indexes
-        indexes = [58, 50, 42, 34, 26, 18, 10, 2, 60, 52, 44, 36, 28, 20, \
-                   12, 4, 62, 54, 46, 38, 30, 22, 14, 6, 64, 56, 48, 40, \
-                   32, 24, 16, 8, 57, 49, 41, 33, 25, 17, 9, 1, 59, 51, \
-                   43, 35, 27, 19, 11, 3, 61, 53, 45, 37, 29, 21, 13, 5, \
-                   63, 55, 47, 39, 31, 23, 15, 7 \
+        indexes = [40, 8, 48, 16, 56, 24, 64, 32, 39, 7, 47, 15, 55, 23, \
+                   63, 31, 38, 6, 46, 14, 54, 22, 62, 30, 37, 5, 45, 13, \
+                   53, 21, 61, 29, 36, 4, 44, 12, 52, 20, 60, 28, 35, 3, \
+                   43, 11, 51, 19, 59, 27, 34, 2, 42, 10, 50, 18, 58, 26, \
+                   33, 1, 41, 9, 49, 17, 57, 25 \
                    ]
 
         # save list version of key for easier processing
@@ -164,7 +186,7 @@ class EncryptionSystem:
         indexes = [32, 1, 2, 3, 4, 5, 4, 5, 6, 7, 8, 9, \
                    8, 9, 10, 11, 12, 13, 12, 13, 14, 15, 16, 17, \
                    16, 17, 18, 19, 20, 21, 20, 21, 22, 23, 24, 25, \
-                   24, 25, 26, 27, 28, 29, 28, 29, 31, 31, 32, 1]
+                   24, 25, 26, 27, 28, 29, 28, 29, 30, 31, 32, 1]
 
         # get 32 right most bit
         tmpKey = eKey[32:]
@@ -183,7 +205,6 @@ class EncryptionSystem:
 
         # convert back to string
         eKey += EncryptionSystem.listToString(self,tmpList)
-
         return eKey
 
     def xOr(self,eKey, rKey):
@@ -192,10 +213,10 @@ class EncryptionSystem:
         indx = 0
         
         # get 48 right most bit
-        tmpKey = eKey[48:]
+        tmpKey = eKey[32:]
 
         # save only other half --32 left most bit
-        eKey = eKey[0:48]
+        eKey = eKey[0:32]
 
         # do an XOR operation for each bit
         for i in tmpKey:
@@ -205,8 +226,25 @@ class EncryptionSystem:
         
         return eKey
 
+    def xOrB(self, eKey):
+        # initializations
+        newKey = ""
+        indx = 0
+        
+        # get 32 right most bit
+        tmpKey = eKey[32:]
+
+        # save only other half --32 left most bit
+        eKey = eKey[0:32]
+
+        # do an XOR operation for each bit
+        for i in tmpKey:
+            newKey += str(int(i) ^ int(eKey[indx]))
+            indx += 1
+            
+        return newKey
+
     def toDec(binN):
-        print("d: ", binN)
         # declarations
         counter = 0
         decimal = 0
@@ -216,9 +254,9 @@ class EncryptionSystem:
 
         # convert to decimal
         for i in binArray:
-            print(i)
             if i == "1":
                 decimal += (2**counter)
+            counter += 1
 
         return decimal
 
@@ -293,23 +331,64 @@ class EncryptionSystem:
 
         return eKey
 
-    def swap(self,eKey):
-        a = eKey[0:32]
-        b = eKey[32:]
+    def finalPerm(self, eKey):
+        """
+        This method returns a string of 56 chars from the "key"
 
-        return a+b
+        * The split function uses the return value
+
+        @param:  self, key --string
+        @return: key --string
+        """
+        # create list of indexes
+        indexes = [40, 8, 48, 16, 56, 24, 64, 32, 39, 7, 47, 15, 55, 23, 63, 31, \
+                   38, 6, 46, 14, 54, 22, 62, 30, 37, 5, 45, 13, 53, 21, 61, 29, \
+                   36, 4, 44, 12, 52, 20, 60, 28, 35, 3, 43, 11, 51, 19, 59, 27, \
+                   34, 2, 42, 10, 50, 18, 58, 26, 33, 1, 41, 9, 49, 17, 57, 25]
+        
+        # save list version of key for easier processing
+       
+        
+        keyList = list(eKey)
+
+        # create new list to store new key
+        tmpList = []
+
+        for i in indexes:
+            tmpList.append(keyList[i - 1])
+
+        # convert back to string
+        eKey = EncryptionSystem.listToString(self,tmpList)
+        return eKey
 
     def encrypt(self,keys):
         #
+        count = 0
         for encryptionN in range(self.__eRounds):
             eKey = self.__packets[encryptionN]
             eKey = EncryptionSystem.initialPermutation(self,eKey)
             for rounD in range(16):
+                eKeyA = eKey
                 eKey = EncryptionSystem.expand(self,eKey)
+                #print("expand: ", eKey)
                 eKey = EncryptionSystem.xOr(self,eKey,keys[rounD])
+                #print("key: ",keys[rounD])
+                #print("xor: ", eKey)
                 eKey = EncryptionSystem.sBoxPassing(self,eKey)
+                #print("sbox: ", eKey)
                 eKey = EncryptionSystem.straightPBox(self,eKey)
-                eKey = EncryptionSystem.swap(self,eKey)
+                #print("stBox: ", eKey)
+                eKeyB = EncryptionSystem.xOrB(self,eKey)
+                #print("xorb: ", eKey)
+                eKey = eKeyA[32:]+eKeyB
+                #print()
+                #print()
+            # swap
+            eKey = eKey[32:] + eKey[0:32]
+
+            # final permutation
+            eKey = EncryptionSystem.finalPerm(self,eKey)
+            print(eKey)
                 
                 
         return EncryptionSystem.toHexDec(self,eKey)
@@ -320,11 +399,8 @@ class EncryptionSystem:
         end = 4
         hexD = ""
         # convert to hexDec
-        print(eKey)
         while end <= 64:
             dec = EncryptionSystem.toDec(eKey[start:end])
-            print(dec)
-            print(eKey[start:end])
             if dec >= 10:
                 if dec == 10:
                     hexD += "A"
@@ -341,7 +417,7 @@ class EncryptionSystem:
             else:
                 hexD += str(dec)
             start = end
-            end = end * 2
+            end = end + 4
 
         return hexD
             
@@ -365,8 +441,8 @@ class EncryptionSystem:
 #key = input("Enter key to be used for encryption: ")
 
 # create systems
-kg = RoundKeyGenerator("securitybbb")        
-es = EncryptionSystem("security")
+kg = RoundKeyGenerator("0001001100110100010101110111100110011011101111001101111111110001")        
+es = EncryptionSystem("0000000100100011010001010110011110001001101010111100110111101111")
 #kg = RoundKeyGenerator(data)        
 #es = EncryptionSystem(key)
 
@@ -377,7 +453,7 @@ keys = kg.generate()
 encryptedData = es.encrypt(keys)
 
 # display info
-print("Data: ", "security")#data)
+#print("Data: ", "")#data)
 print()
 print("Encrypted Data: ", encryptedData, len(encryptedData))
 

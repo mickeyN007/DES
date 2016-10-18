@@ -24,7 +24,11 @@ class RoundKeyGenerator:
         self.__key = ""
         self.__keys = []
 
-        RoundKeyGenerator.toBin(self)
+        # change to binary if not in binary
+        if len(uKey) == 64:
+            self.__key = uKey
+        else:
+            RoundKeyGenerator.toBin(self)
 
     
     def toBin(self):
@@ -118,7 +122,6 @@ class RoundKeyGenerator:
             for ii in range(2,28):
                 newKey += b[ii]
             newKey += b[0] + b[1]
-
         return newKey
 
     def compress(self, newKey):
@@ -210,17 +213,23 @@ class RoundKeyGenerator:
         @return: list of keys
         """
         # do a parity drop
-        key = RoundKeyGenerator.parityDrop(self)
+        tmpKey = RoundKeyGenerator.parityDrop(self)
         
         # process 16 times
         for i in range(1,17):
-            key = RoundKeyGenerator.split(self,key)
-            key = RoundKeyGenerator.shift(self,key,i)
-            key = RoundKeyGenerator.compress(self,key)
+            tmpKey = RoundKeyGenerator.split(self,tmpKey)
+            tmpKey = RoundKeyGenerator.shift(self,tmpKey,i)
+            key = RoundKeyGenerator.compress(self,tmpKey)
 
             # add key to private attribute keys
             self.__keys.append(key)
 
-            key = RoundKeyGenerator.expand(self,key)
+            #key = RoundKeyGenerator.expand(self,key)
 
         return self.__keys
+
+##key = input("Enter key: ")
+##a = RoundKeyGenerator(key)
+##keys = a.generate()
+##for i in keys:
+##    print(i)
