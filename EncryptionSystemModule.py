@@ -76,7 +76,7 @@ class EncryptionSystem:
         self.__packets = []
 
         # change to binary if not in binary
-        if len(pTxt) == 64:
+        if (len(pTxt) == 64 or len(pTxt) % 64 == 0) and pTxt.isdigit() == False:
             self.__eKey = pTxt
         else:
             #RoundKeyGenerator.toBin(self)
@@ -208,6 +208,13 @@ class EncryptionSystem:
         return eKey
 
     def xOr(self,eKey, rKey):
+        """
+        This method returns a list of each individual bit from the round key
+        XOREd with each individual bit from the current encrypted key
+
+        @param:  self, partially encrypted key --string, round key --string
+        @return: list of xored keys --list
+        """
         # initializations
         newKey = ""
         indx = 0
@@ -227,6 +234,13 @@ class EncryptionSystem:
         return eKey
 
     def xOrB(self, eKey):
+        """
+        This method returns a list of each individual bit from the round key
+        XOREd with each individual bit from the current encrypted key
+
+        @param:  self, partially encrypted key --string, round key --string
+        @return: list of xored keys --list
+        """
         # initializations
         newKey = ""
         indx = 0
@@ -245,6 +259,8 @@ class EncryptionSystem:
         return newKey
 
     def toDec(binN):
+        """
+        """
         # declarations
         counter = 0
         decimal = 0
@@ -363,7 +379,7 @@ class EncryptionSystem:
 
     def encrypt(self,keys):
         #
-        count = 0
+        encStr = ""
         for encryptionN in range(self.__eRounds):
             eKey = self.__packets[encryptionN]
             eKey = EncryptionSystem.initialPermutation(self,eKey)
@@ -385,13 +401,14 @@ class EncryptionSystem:
                 #print()
             # swap
             eKey = eKey[32:] + eKey[0:32]
-
+            
+            
             # final permutation
             eKey = EncryptionSystem.finalPerm(self,eKey)
+            encStr += eKey
             print(eKey)
                 
-                
-        return EncryptionSystem.toHexDec(self,eKey)
+        return EncryptionSystem.toHexDec(self,encStr)
 
     def toHexDec(self,eKey):
         # declarations
@@ -399,7 +416,7 @@ class EncryptionSystem:
         end = 4
         hexD = ""
         # convert to hexDec
-        while end <= 64:
+        while end <= len(eKey):
             dec = EncryptionSystem.toDec(eKey[start:end])
             if dec >= 10:
                 if dec == 10:
@@ -437,14 +454,14 @@ class EncryptionSystem:
         return keyString
 
 # get data
-#data = input("Enter data you wish to encrypt: ")
-#key = input("Enter key to be used for encryption: ")
+data = input("Enter data you wish to encrypt: ")
+key = input("Enter key to be used for encryption: ")
 
 # create systems
-kg = RoundKeyGenerator("0001001100110100010101110111100110011011101111001101111111110001")        
-es = EncryptionSystem("0000000100100011010001010110011110001001101010111100110111101111")
-#kg = RoundKeyGenerator(data)        
-#es = EncryptionSystem(key)
+#kg = RoundKeyGenerator("0001001100110100010101110111100110011011101111001101111111110001")        
+#es = EncryptionSystem("00000001001000110100010101100111100010011010101111001101111011110000000100100011010001010110011110001001101010111100110111101111")
+kg = RoundKeyGenerator(key)        
+es = EncryptionSystem(data)
 
 # generate keys
 keys = kg.generate()

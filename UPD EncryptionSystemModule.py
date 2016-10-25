@@ -155,6 +155,13 @@ class EncryptionSystem:
         return eKey
 
     def xOr(self,eKey, rKey):
+        """
+        This method returns a list of each individual bit from the round key
+        XOREd with each individual bit from the current encrypted key
+
+        @param:  self, partially encrypted key --string, round key --string
+        @return: list of xored keys --list
+        """
         # initializations
         newKey = ""
         indx = 0
@@ -174,6 +181,9 @@ class EncryptionSystem:
         return eKey
 
     def sBoxPassing(self,eKey,):
+        """
+        
+        """
         # get 48 right most bit
         tmpKey = eKey[47:]
 
